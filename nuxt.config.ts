@@ -1,3 +1,5 @@
+import { SITE_DESCRIPTION, SITE_LOCALE, SITE_NAME, SITE_URL } from './utils/site-meta'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-01',
   devtools: { enabled: true },
@@ -5,7 +7,7 @@ export default defineNuxtConfig({
   app: {
     baseURL: '/',
     head: {
-      htmlAttrs: { lang: 'zh-Hant-TW' },
+      htmlAttrs: { lang: SITE_LOCALE },
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
         { name: 'theme-color', content: '#0F172A' },
@@ -20,8 +22,16 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@pinia/nuxt',
     '@vite-pwa/nuxt',
+    '@nuxtjs/sitemap',
+    'nuxt-schema-org',
   ],
   css: ['~/assets/css/main.css'],
+  site: {
+    url: SITE_URL,
+    name: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    defaultLocale: SITE_LOCALE,
+  },
   nitro: {
     preset: 'github_pages',
   },
@@ -35,14 +45,14 @@ export default defineNuxtConfig({
   pwa: {
     registerType: 'autoUpdate',
     manifest: {
-      name: 'Tesla 交車檢查清單',
+      name: SITE_NAME,
       short_name: '交車檢查',
-      description: '特斯拉交車現場檢查清單，支援拍照、備註與 PDF 匯出。資料全程儲存在瀏覽器，不上傳。',
+      description: SITE_DESCRIPTION,
       theme_color: '#0F172A',
       background_color: '#F8FAFC',
       display: 'standalone',
       start_url: '/',
-      lang: 'zh-Hant-TW',
+      lang: SITE_LOCALE,
       icons: [
         { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
         { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },

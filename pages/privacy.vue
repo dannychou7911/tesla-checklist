@@ -1,7 +1,20 @@
 <script setup lang="ts">
+import { SITE_LOCALE_OG, SITE_NAME } from '~/utils/site-meta'
+
+const PRIVACY_TITLE = `隱私權聲明 — ${SITE_NAME}`
+const PRIVACY_DESCRIPTION = '本工具的隱私權聲明。所有資料只儲存在你的瀏覽器內，不會上傳到任何伺服器。'
+
 useSeoMeta({
-  title: '隱私權聲明 — Tesla 交車檢查清單',
-  description: '本工具的隱私權聲明。所有資料只儲存在你的瀏覽器內，不會上傳到任何伺服器。',
+  title: PRIVACY_TITLE,
+  description: PRIVACY_DESCRIPTION,
+  ogTitle: PRIVACY_TITLE,
+  ogDescription: PRIVACY_DESCRIPTION,
+  ogType: 'article',
+  ogImage: '/icons/icon-512.png',
+  ogLocale: SITE_LOCALE_OG,
+  twitterCard: 'summary',
+  twitterTitle: PRIVACY_TITLE,
+  twitterDescription: PRIVACY_DESCRIPTION,
 })
 </script>
 

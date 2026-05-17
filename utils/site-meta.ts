@@ -1,0 +1,5 @@
+export const SITE_URL = 'https://tesla-checklist.dantoolkit.cc'
+export const SITE_NAME = 'Tesla 交車檢查清單'
+export const SITE_DESCRIPTION = '特斯拉交車現場檢查清單，支援拍照、備註與 PDF 匯出。資料全程儲存在瀏覽器，不上傳。'
+export const SITE_LOCALE = 'zh-Hant-TW'
+export const SITE_LOCALE_OG = 'zh_TW'

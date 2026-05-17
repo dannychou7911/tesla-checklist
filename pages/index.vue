@@ -14,10 +14,37 @@ import { type PdfItemRow, usePdfExport } from '~/composables/usePdfExport'
 import { useChecklistStore, type VehicleInfo } from '~/stores/checklist'
 import type { Checklist } from '~/utils/checklist-types'
 
+import { SITE_DESCRIPTION, SITE_LOCALE, SITE_LOCALE_OG, SITE_NAME } from '~/utils/site-meta'
+
 useSeoMeta({
-  title: 'Tesla 交車檢查清單',
-  description: '特斯拉交車現場檢查清單，支援拍照、備註與 PDF 匯出。資料全程儲存在瀏覽器，不上傳。',
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
+  ogTitle: SITE_NAME,
+  ogDescription: SITE_DESCRIPTION,
+  ogType: 'website',
+  ogImage: '/icons/icon-512.png',
+  ogLocale: SITE_LOCALE_OG,
+  twitterCard: 'summary',
+  twitterTitle: SITE_NAME,
+  twitterDescription: SITE_DESCRIPTION,
+  twitterImage: '/icons/icon-512.png',
 })
+
+useSchemaOrg([
+  defineSoftwareApp({
+    '@type': 'WebApplication',
+    name: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Any',
+    inLanguage: SITE_LOCALE,
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'TWD',
+    },
+  }),
+])
 
 const store = useChecklistStore()
 const storage = useChecklistStorage()
