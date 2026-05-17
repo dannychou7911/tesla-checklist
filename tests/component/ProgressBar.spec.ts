@@ -58,6 +58,46 @@ describe('ProgressBar — a11y / 視覺', () => {
   })
 })
 
+describe('ProgressBar — v2 tier', () => {
+  it('percent=0 → tier=1，無 hint 文字', () => {
+    const w = mount(ProgressBar, { props: { checked: 0, total: 10 } })
+    const bar = w.get('[data-testid="progressbar"]')
+    expect(bar.attributes('data-tier')).toBe('1')
+    expect(w.text()).not.toContain('快過半')
+    expect(w.text()).not.toContain('快完成')
+    expect(w.text()).not.toContain('全部完成')
+  })
+
+  it('percent=33 邊界 → tier=1', () => {
+    const w = mount(ProgressBar, { props: { checked: 1, total: 3 } })
+    expect(w.get('[data-testid="progressbar"]').attributes('data-tier')).toBe('1')
+  })
+
+  it('percent=34~66 → tier=2，hint「快過半」', () => {
+    const w = mount(ProgressBar, { props: { checked: 5, total: 10 } })
+    expect(w.get('[data-testid="progressbar"]').attributes('data-tier')).toBe('2')
+    expect(w.text()).toContain('快過半')
+  })
+
+  it('percent=67~99 → tier=3，hint「就快完成」', () => {
+    const w = mount(ProgressBar, { props: { checked: 8, total: 10 } })
+    expect(w.get('[data-testid="progressbar"]').attributes('data-tier')).toBe('3')
+    expect(w.text()).toContain('就快完成')
+  })
+
+  it('percent=100 → tier=4，hint「全部完成」', () => {
+    const w = mount(ProgressBar, { props: { checked: 10, total: 10 } })
+    expect(w.get('[data-testid="progressbar"]').attributes('data-tier')).toBe('4')
+    expect(w.text()).toContain('全部完成')
+  })
+
+  it('tier=4 fill 帶 amber glow class', () => {
+    const w = mount(ProgressBar, { props: { checked: 10, total: 10 } })
+    const fill = w.get('[data-testid="progressbar-fill"]')
+    expect(fill.classes().some((c) => c.includes('shadow-amber-glow'))).toBe(true)
+  })
+})
+
 describe('AppHeader', () => {
   it('渲染標題「交車檢查清單」', () => {
     const w = mount(AppHeader, { props: { checked: 0, total: 10 } })
