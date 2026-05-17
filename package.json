@@ -16,6 +16,7 @@
   "dependencies": {
     "@nuxt/ui": "^3.0.0",
     "@pinia/nuxt": "^0.5.5",
+    "browser-image-compression": "^2.0.2",
     "idb": "^8.0.0",
     "nuxt": "^3.14.0",
     "pinia": "^2.2.6",
