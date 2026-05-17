@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme {
+  --font-sans: "Inter", "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
+}
+
+html,
+body,
+#__nuxt {
+  min-height: 100dvh;
+  -webkit-text-size-adjust: 100%;
+}
