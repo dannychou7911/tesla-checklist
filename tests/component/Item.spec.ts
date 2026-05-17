@@ -123,6 +123,32 @@ describe('Item — 整列 tap 切換勾選', () => {
   })
 })
 
+describe('Item — v2 visual checkbox 與染色', () => {
+  it('未勾時 visual checkbox 不顯示 ✓', () => {
+    const w = mountItem()
+    const visual = w.get('[data-testid="item-checkbox-visual"]')
+    expect(visual.find('[data-testid="item-checkbox-check"]').exists()).toBe(false)
+  })
+
+  it('已勾時 visual checkbox 顯示 ✓ 且帶 animate-check-pop', async () => {
+    const store = useChecklistStore()
+    await store.toggleChecked('i1')
+    const w = mountItem()
+    await w.vm.$nextTick()
+    const check = w.get('[data-testid="item-checkbox-check"]')
+    expect(check.classes().some((c) => c.includes('animate-check-pop'))).toBe(true)
+  })
+
+  it('已勾 row 帶 bg-teal-50/40 染色 class', async () => {
+    const store = useChecklistStore()
+    await store.toggleChecked('i1')
+    const w = mountItem()
+    await w.vm.$nextTick()
+    const row = w.get('[data-testid="item-row"]')
+    expect(row.classes().some((c) => c.includes('bg-teal-50/40'))).toBe(true)
+  })
+})
+
 describe('Item — chevron 切換展開', () => {
   it('點 chevron 展開抽屜，不呼叫 toggleChecked', async () => {
     const store = useChecklistStore()

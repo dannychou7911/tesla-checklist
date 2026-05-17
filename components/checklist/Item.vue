@@ -25,6 +25,8 @@ const compression = usePhotoCompression()
 const expanded = ref(false)
 const lightboxOpen = ref(false)
 const lightboxPhotoId = ref<string | null>(null)
+const flashing = ref(false)
+let flashTimer: ReturnType<typeof setTimeout> | null = null
 
 const photoUrls = new Map<string, string>()
 const photos = ref<PhotoItem[]>([])
@@ -73,11 +75,23 @@ watch(
   { immediate: true },
 )
 
+watch(checked, (next, prev) => {
+  if (next && !prev) {
+    flashing.value = true
+    if (flashTimer) clearTimeout(flashTimer)
+    flashTimer = setTimeout(() => {
+      flashing.value = false
+      flashTimer = null
+    }, 600)
+  }
+})
+
 onBeforeUnmount(() => {
   for (const url of photoUrls.values()) {
     URL.revokeObjectURL(url)
   }
   photoUrls.clear()
+  if (flashTimer) clearTimeout(flashTimer)
 })
 
 async function onRowToggle(): Promise<void> {
@@ -121,29 +135,62 @@ async function onLightboxDelete(id: string): Promise<void> {
 </script>
 
 <template>
-  <div class="border-b border-slate-200 dark:border-slate-700">
+  <div class="border-b border-slate-200 dark:border-slate-700 last:border-b-0">
     <div
       data-testid="item-row"
       role="button"
       :aria-pressed="checked"
       :aria-label="item.label"
       :tabindex="0"
-      class="flex items-center gap-3 px-3 py-3 min-h-[60px] cursor-pointer select-none hover:bg-slate-50 dark:hover:bg-slate-800"
+      :class="[
+        'flex items-center gap-3 px-3 py-3 min-h-[60px] cursor-pointer select-none transition-colors duration-200',
+        checked
+          ? 'bg-teal-50/40 dark:bg-teal-950/30 hover:bg-teal-50/60 dark:hover:bg-teal-950/40'
+          : 'hover:bg-slate-50 dark:hover:bg-slate-800',
+        flashing && 'motion-safe:animate-flash',
+      ]"
       @click="onRowToggle"
       @keydown.enter.prevent="onRowToggle"
       @keydown.space.prevent="onRowToggle"
     >
-      <input
-        type="checkbox"
-        data-testid="item-checkbox"
-        :checked="checked"
-        tabindex="-1"
-        aria-hidden="true"
-        class="w-5 h-5 pointer-events-none accent-slate-900 dark:accent-slate-100"
-      >
+      <span class="relative inline-flex w-6 h-6 shrink-0 items-center justify-center">
+        <input
+          type="checkbox"
+          data-testid="item-checkbox"
+          :checked="checked"
+          tabindex="-1"
+          aria-hidden="true"
+          class="sr-only"
+        >
+        <span
+          data-testid="item-checkbox-visual"
+          aria-hidden="true"
+          :class="[
+            'absolute inset-0 rounded-md border-2 transition-colors duration-200 flex items-center justify-center',
+            checked
+              ? 'bg-teal-600 border-teal-600 dark:bg-teal-500 dark:border-teal-500'
+              : 'bg-white border-slate-300 dark:bg-slate-800 dark:border-slate-500',
+          ]"
+        >
+          <svg
+            v-if="checked"
+            data-testid="item-checkbox-check"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="white"
+            class="w-4 h-4 motion-safe:animate-check-pop"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M16.704 5.29a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-3.5-3.5a.75.75 0 111.06-1.06l2.97 2.97 6.97-6.97a.75.75 0 011.06 0z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </span>
+      </span>
       <div class="flex-1 min-w-0">
         <div
-          class="font-medium text-slate-900 dark:text-slate-100 break-words"
+          class="font-medium text-slate-900 dark:text-slate-100 break-words transition-colors duration-200"
           :class="{ 'line-through text-slate-500 dark:text-slate-500': checked }"
         >
           {{ item.label }}
@@ -158,7 +205,7 @@ async function onLightboxDelete(id: string): Promise<void> {
         :aria-expanded="expanded"
         :aria-controls="drawerId"
         aria-label="展開或收合"
-        class="w-11 h-11 flex items-center justify-center rounded-md text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer"
+        class="w-11 h-11 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer transition-colors"
         @click.stop="onToggleExpand"
         @keydown.enter.stop
         @keydown.space.stop
@@ -175,7 +222,7 @@ async function onLightboxDelete(id: string): Promise<void> {
       v-if="expanded"
       :id="drawerId"
       data-testid="item-drawer"
-      class="px-3 py-4 bg-slate-50 dark:bg-slate-800/50 flex flex-col gap-4"
+      class="px-3 py-4 bg-slate-50 dark:bg-slate-800/50 flex flex-col gap-4 motion-safe:animate-slide-down"
     >
       <StatusTagPicker
         :model-value="statusTag"
