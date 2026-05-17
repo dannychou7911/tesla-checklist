@@ -58,10 +58,10 @@ function onChange<K extends keyof AppSettings>(key: K, e: Event): void {
   >
     <div
       data-testid="settings-backdrop"
-      class="absolute inset-0 bg-black/40"
+      class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
       @click="close"
     />
-    <aside class="relative w-full max-w-sm h-full bg-white dark:bg-slate-900 shadow-xl flex flex-col">
+    <aside class="relative w-full max-w-sm h-full bg-white dark:bg-slate-900 shadow-soft-lg rounded-l-3xl flex flex-col motion-safe:animate-slide-down">
       <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700">
         <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
           設定
@@ -70,7 +70,7 @@ function onChange<K extends keyof AppSettings>(key: K, e: Event): void {
           type="button"
           data-testid="settings-close"
           aria-label="關閉設定"
-          class="w-10 h-10 flex items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700 cursor-pointer"
+          class="w-11 h-11 flex items-center justify-center rounded-xl text-slate-500 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700 cursor-pointer transition-colors active:scale-95"
           @click="close"
         >
           ✕

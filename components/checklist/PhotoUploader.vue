@@ -48,7 +48,7 @@ function onFileChange(e: Event): void {
       :key="photo.id"
       type="button"
       :data-testid="`photo-thumb-${photo.id}`"
-      class="relative w-20 h-20 rounded-md overflow-hidden border border-slate-300 dark:border-slate-600 cursor-pointer"
+      class="relative w-20 h-20 rounded-xl overflow-hidden ring-1 ring-slate-200 dark:ring-slate-700 hover:ring-teal-400 cursor-pointer transition-all shadow-soft"
       :aria-label="`檢視照片 ${photo.id}`"
       @click="emit('view', photo.id)"
     >
@@ -77,7 +77,7 @@ function onFileChange(e: Event): void {
       data-testid="photo-add"
       :disabled="disabled"
       aria-label="新增照片"
-      class="w-20 h-20 rounded-md border-2 border-dashed border-slate-300 dark:border-slate-600 flex items-center justify-center text-2xl text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+      class="w-20 h-20 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-600 flex items-center justify-center text-2xl text-slate-400 hover:border-teal-400 hover:bg-teal-50/40 dark:hover:bg-teal-950/30 dark:hover:border-teal-500 cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
       @click="openPicker"
     >
       ＋

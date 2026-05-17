@@ -2,15 +2,15 @@
 </script>
 
 <template>
-  <footer class="px-4 py-6 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-700">
-    <div class="flex flex-col gap-2 max-w-3xl mx-auto">
+  <footer class="mt-8 px-4 py-6 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/50">
+    <div class="flex flex-col gap-2 max-w-3xl mx-auto leading-6">
       <p>
         清單內容彙整自
         <a
           href="https://meng-tesla.com/"
           target="_blank"
           rel="noopener noreferrer"
-          class="underline hover:text-slate-700 dark:hover:text-slate-200"
+          class="underline underline-offset-2 hover:text-teal-700 dark:hover:text-teal-300 transition-colors"
         >MENG TESLA</a>
         及社群整理，依個人經驗整理重組。
       </p>
@@ -20,7 +20,7 @@
       <p>
         <a
           href="/privacy"
-          class="underline hover:text-slate-700 dark:hover:text-slate-200"
+          class="underline underline-offset-2 hover:text-teal-700 dark:hover:text-teal-300 transition-colors"
         >隱私權聲明</a>
       </p>
     </div>

@@ -34,7 +34,7 @@ function onDelete(): void {
   >
     <div
       data-testid="lightbox-backdrop"
-      class="absolute inset-0 bg-black/85"
+      class="absolute inset-0 bg-slate-950/85 backdrop-blur-md"
       @click="close"
     />
     <div class="relative max-w-[95vw] max-h-[90vh]">
@@ -43,14 +43,14 @@ function onDelete(): void {
         :src="photo.url"
         :alt="`照片 ${photo.id}`"
         data-testid="lightbox-img"
-        class="max-w-[95vw] max-h-[90vh] object-contain rounded-md"
+        class="max-w-[95vw] max-h-[90vh] object-contain rounded-xl shadow-soft-lg"
         @click.stop
       >
       <button
         type="button"
         data-testid="lightbox-close"
         aria-label="關閉"
-        class="absolute -top-12 right-0 w-10 h-10 rounded-full bg-white/15 text-white text-lg cursor-pointer hover:bg-white/25"
+        class="absolute -top-12 right-0 w-10 h-10 rounded-full bg-white/15 text-white text-lg cursor-pointer hover:bg-white/25 backdrop-blur transition-colors active:scale-95"
         @click="close"
       >
         ✕
@@ -60,7 +60,7 @@ function onDelete(): void {
         type="button"
         data-testid="lightbox-delete"
         aria-label="刪除照片"
-        class="absolute -bottom-14 right-0 px-4 py-2 rounded-md bg-rose-600 text-white text-sm cursor-pointer hover:bg-rose-700"
+        class="absolute -bottom-14 right-0 px-4 py-2 rounded-xl bg-rose-600 text-white text-sm font-medium cursor-pointer hover:bg-rose-700 shadow-soft transition-all active:scale-[0.98]"
         @click="onDelete"
       >
         刪除照片

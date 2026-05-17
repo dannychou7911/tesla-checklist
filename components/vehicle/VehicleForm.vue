@@ -67,11 +67,11 @@ function onMileageChange(e: Event): void {
 }
 
 const inputBaseClass
-  = 'w-full px-3 py-2 rounded-md border bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500'
+  = 'w-full min-h-[44px] px-3 py-2 rounded-lg border bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500 dark:focus:border-teal-400'
 </script>
 
 <template>
-  <form class="flex flex-col gap-4 p-4 bg-white dark:bg-slate-900 rounded-md border border-slate-200 dark:border-slate-700">
+  <form class="flex flex-col gap-4 p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-soft">
     <div class="flex flex-col gap-1">
       <label for="vehicle-model" class="text-sm font-medium text-slate-700 dark:text-slate-300">
         車型 <span class="text-rose-600" aria-hidden="true">*</span>
