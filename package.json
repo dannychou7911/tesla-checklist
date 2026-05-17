@@ -12,7 +12,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "prepare:fonts": "node scripts/subset-font.mjs"
+    "prepare:fonts": "node scripts/subset-font.mjs",
+    "prepare:icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
     "@nuxt/ui": "^3.0.0",
@@ -30,12 +31,14 @@
     "@nuxt/eslint": "^0.7.0",
     "@nuxt/test-utils": "^3.14.0",
     "@types/canvas-confetti": "^1.6.4",
+    "@vite-pwa/nuxt": "^1.1.1",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vue/test-utils": "^2.4.6",
     "ajv": "^8.20.0",
     "eslint": "^9.15.0",
     "fake-indexeddb": "^6.0.0",
     "happy-dom": "^15.11.0",
+    "sharp": "^0.34.5",
     "subset-font": "^2.3.0",
     "typescript": "^5.6.0",
     "vitest": "^3.2.0",
