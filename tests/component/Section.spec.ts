@@ -96,6 +96,40 @@ describe('Section', () => {
   })
 })
 
+describe('Section — v2 accent + 完成徽章', () => {
+  it('header 帶 data-accent 屬性供色條使用', () => {
+    const w = mount(Section, {
+      props: { section: mockSection, expanded: false, accent: 'teal' },
+    })
+    const root = w.get('[data-testid="section-root"]')
+    expect(root.attributes('data-accent')).toBe('teal')
+  })
+
+  it('未勾選任何 item 時不顯示完成徽章', () => {
+    const w = mount(Section, { props: { section: mockSection, expanded: false } })
+    expect(w.find('[data-testid="section-complete-badge"]').exists()).toBe(false)
+  })
+
+  it('全勾完成時顯示完成徽章', async () => {
+    const store = useChecklistStore()
+    await store.toggleChecked('i1')
+    await store.toggleChecked('i2')
+    await store.toggleChecked('i3')
+    const w = mount(Section, { props: { section: mockSection, expanded: false } })
+    expect(w.find('[data-testid="section-complete-badge"]').exists()).toBe(true)
+  })
+
+  it('完成徽章帶 animate-wiggle class', async () => {
+    const store = useChecklistStore()
+    await store.toggleChecked('i1')
+    await store.toggleChecked('i2')
+    await store.toggleChecked('i3')
+    const w = mount(Section, { props: { section: mockSection, expanded: false } })
+    const badge = w.get('[data-testid="section-complete-badge"]')
+    expect(badge.classes().some((c) => c.includes('animate-wiggle'))).toBe(true)
+  })
+})
+
 describe('SectionList', () => {
   it('渲染所有 Section', () => {
     const w = mount(SectionList, { props: { sections: mockSections } })
