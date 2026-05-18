@@ -1,9 +1,25 @@
 import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import ConfirmClearDialog from '../../components/ui/ConfirmClearDialog.vue'
 
 describe('ConfirmClearDialog', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+    const start = Date.now()
+    vi.spyOn(performance, 'now').mockImplementation(() => Date.now() - start)
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
+      return setTimeout(() => cb(performance.now()), 16) as unknown as number
+    })
+    vi.stubGlobal('cancelAnimationFrame', (id: number) => clearTimeout(id))
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.unstubAllGlobals()
+    vi.restoreAllMocks()
+  })
+
   it('open=false 不渲染 dialog', () => {
     const w = mount(ConfirmClearDialog, { props: { open: false } })
     expect(w.find('[data-testid="confirm-clear"]').exists()).toBe(false)
@@ -16,30 +32,26 @@ describe('ConfirmClearDialog', () => {
     expect(dialog.attributes('aria-modal')).toBe('true')
   })
 
-  it('預設「清除」按鈕禁用', () => {
+  it('預設按鈕顯示「長按以清除」', () => {
     const w = mount(ConfirmClearDialog, { props: { open: true } })
-    const btn = w.get('[data-testid="confirm-clear-submit"]').element as HTMLButtonElement
-    expect(btn.disabled).toBe(true)
+    expect(w.get('[data-testid="confirm-clear-submit"]').text()).toContain('長按以清除')
   })
 
-  it('輸入「清除」二字後按鈕啟用', async () => {
+  it('短時間放開不 emit confirm', async () => {
     const w = mount(ConfirmClearDialog, { props: { open: true } })
-    await w.get('[data-testid="confirm-clear-input"]').setValue('清除')
-    const btn = w.get('[data-testid="confirm-clear-submit"]').element as HTMLButtonElement
-    expect(btn.disabled).toBe(false)
+    const btn = w.get('[data-testid="confirm-clear-submit"]')
+    await btn.trigger('pointerdown')
+    await vi.advanceTimersByTimeAsync(200)
+    await btn.trigger('pointerup')
+    await vi.advanceTimersByTimeAsync(1700)
+    expect(w.emitted('confirm')).toBeFalsy()
   })
 
-  it('輸入其他字按鈕保持禁用', async () => {
+  it('按住 1.5 秒以上 emit confirm', async () => {
     const w = mount(ConfirmClearDialog, { props: { open: true } })
-    await w.get('[data-testid="confirm-clear-input"]').setValue('刪除')
-    const btn = w.get('[data-testid="confirm-clear-submit"]').element as HTMLButtonElement
-    expect(btn.disabled).toBe(true)
-  })
-
-  it('點啟用後的「清除」按鈕 emit confirm', async () => {
-    const w = mount(ConfirmClearDialog, { props: { open: true } })
-    await w.get('[data-testid="confirm-clear-input"]').setValue('清除')
-    await w.get('[data-testid="confirm-clear-submit"]').trigger('click')
+    const btn = w.get('[data-testid="confirm-clear-submit"]')
+    await btn.trigger('pointerdown')
+    await vi.advanceTimersByTimeAsync(1700)
     expect(w.emitted('confirm')).toBeTruthy()
   })
 
@@ -55,12 +67,13 @@ describe('ConfirmClearDialog', () => {
     expect(w.emitted('update:open')).toEqual([[false]])
   })
 
-  it('close 後重新打開 input 已清空', async () => {
+  it('close 後重新打開進度重置', async () => {
     const w = mount(ConfirmClearDialog, { props: { open: true } })
-    await w.get('[data-testid="confirm-clear-input"]').setValue('清除')
+    const btn = w.get('[data-testid="confirm-clear-submit"]')
+    await btn.trigger('pointerdown')
+    await vi.advanceTimersByTimeAsync(500)
     await w.setProps({ open: false })
     await w.setProps({ open: true })
-    const input = w.get('[data-testid="confirm-clear-input"]').element as HTMLInputElement
-    expect(input.value).toBe('')
+    expect(w.get('[data-testid="confirm-clear-submit"]').text()).toContain('長按以清除')
   })
 })

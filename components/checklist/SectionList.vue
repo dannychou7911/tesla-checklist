@@ -7,7 +7,7 @@ import {
   HomeModernIcon,
   SparklesIcon,
 } from '@heroicons/vue/24/outline'
-import { computed, type Component, ref } from 'vue'
+import { computed, type Component, ref, watch } from 'vue'
 
 import type { ChecklistSection } from '../../utils/checklist-types'
 
@@ -41,6 +41,18 @@ function iconFor(sectionId: string): Component | null {
 }
 
 const expandedMap = ref<Record<string, boolean>>({})
+
+watch(
+  () => props.sections,
+  (next) => {
+    if (next.length === 0) return
+    const firstId = next[0].id
+    if (expandedMap.value[firstId] === undefined) {
+      expandedMap.value = { ...expandedMap.value, [firstId]: true }
+    }
+  },
+  { immediate: true },
+)
 
 const allExpanded = computed<boolean>(
   () =>
