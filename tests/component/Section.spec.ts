@@ -136,9 +136,10 @@ describe('SectionList', () => {
     expect(w.findAllComponents(Section)).toHaveLength(2)
   })
 
-  it('預設全部收合，不渲染任何 Item', () => {
+  it('預設展開第一個 Section（onboarding）', () => {
     const w = mount(SectionList, { props: { sections: mockSections } })
-    expect(w.findAllComponents(Item)).toHaveLength(0)
+    const firstSectionItems = mockSections[0].items.length
+    expect(w.findAllComponents(Item)).toHaveLength(firstSectionItems)
   })
 
   it('點「全部展開」展開所有 Section（4 個 Item 渲染）', async () => {

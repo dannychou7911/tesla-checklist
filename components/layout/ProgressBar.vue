@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import {
+  CheckBadgeIcon,
+  RocketLaunchIcon,
+  SparklesIcon,
+} from '@heroicons/vue/24/solid'
+import { computed, type Component } from 'vue'
 
 interface Props {
   checked: number
@@ -23,28 +28,37 @@ const fillClass = computed(() => {
   switch (tier.value) {
     case 1: return 'bg-teal-600'
     case 2: return 'bg-linear-to-r from-teal-500 to-emerald-500'
-    case 3: return 'bg-linear-to-r from-emerald-500 via-amber-400 to-amber-500'
-    case 4: return 'bg-linear-to-r from-amber-500 via-orange-500 to-red-500 shadow-amber-glow'
+    case 3: return 'bg-linear-to-r from-teal-500 via-emerald-500 to-emerald-600'
+    case 4: return 'bg-linear-to-r from-emerald-500 via-emerald-500 to-emerald-600 shadow-success-ring'
   }
 })
 
 const heightClass = computed(() => (tier.value === 1 ? 'h-2' : 'h-3'))
 
-const hintText = computed(() => {
-  switch (tier.value) {
-    case 1: return ''
-    case 2: return '快過半 🎯'
-    case 3: return '就快完成 ✦'
-    case 4: return '全部完成 🎉'
-  }
-})
+interface HintConfig {
+  text: string
+  icon: Component
+  colorClass: string
+}
 
-const hintColorClass = computed(() => {
+const hint = computed<HintConfig | null>(() => {
   switch (tier.value) {
-    case 1: return ''
-    case 2: return 'text-teal-700 dark:text-teal-300'
-    case 3: return 'text-amber-700 dark:text-amber-300'
-    case 4: return 'text-red-700 dark:text-red-300 font-semibold'
+    case 1: return null
+    case 2: return {
+      text: '快過半',
+      icon: RocketLaunchIcon,
+      colorClass: 'text-teal-700 dark:text-teal-300',
+    }
+    case 3: return {
+      text: '就快完成',
+      icon: SparklesIcon,
+      colorClass: 'text-emerald-700 dark:text-emerald-300',
+    }
+    case 4: return {
+      text: '全部完成',
+      icon: CheckBadgeIcon,
+      colorClass: 'text-emerald-700 dark:text-emerald-300 font-semibold',
+    }
   }
 })
 </script>
@@ -76,11 +90,12 @@ const hintColorClass = computed(() => {
       />
     </div>
     <p
-      v-if="hintText"
-      :class="['text-xs', hintColorClass]"
+      v-if="hint"
+      :class="['text-xs flex items-center gap-1', hint.colorClass]"
       data-testid="progressbar-hint"
     >
-      {{ hintText }}
+      <component :is="hint.icon" class="w-3.5 h-3.5" aria-hidden="true" />
+      <span>{{ hint.text }}</span>
     </p>
   </div>
 </template>

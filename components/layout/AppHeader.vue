@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Cog6ToothIcon, TrashIcon } from '@heroicons/vue/24/outline'
+
 import ProgressBar from './ProgressBar.vue'
 
 interface Props {
@@ -9,7 +11,7 @@ interface Props {
 defineProps<Props>()
 
 const emit = defineEmits<{
-  'export-pdf': []
+  'open-settings': []
   clear: []
 }>()
 </script>
@@ -24,22 +26,24 @@ const emit = defineEmits<{
         <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100 tracking-tight-display">
           交車檢查清單
         </h1>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1">
           <button
             type="button"
-            data-testid="header-export"
-            class="min-h-[44px] px-4 py-1.5 text-sm font-medium rounded-xl bg-teal-600 text-white hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-400 dark:text-slate-950 cursor-pointer transition-colors shadow-soft active:scale-[0.98]"
-            @click="emit('export-pdf')"
+            data-testid="header-settings"
+            aria-label="設定"
+            class="w-11 h-11 flex items-center justify-center rounded-xl text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 cursor-pointer transition-colors active:scale-95"
+            @click="emit('open-settings')"
           >
-            匯出 PDF
+            <Cog6ToothIcon class="w-5 h-5" aria-hidden="true" />
           </button>
           <button
             type="button"
             data-testid="header-clear"
-            class="min-h-[44px] px-4 py-1.5 text-sm font-medium rounded-xl border border-rose-300 dark:border-rose-700 text-rose-600 dark:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/40 cursor-pointer transition-colors active:scale-[0.98]"
+            aria-label="清除所有資料"
+            class="w-11 h-11 flex items-center justify-center rounded-xl text-slate-500 hover:bg-rose-50 hover:text-rose-600 dark:text-slate-400 dark:hover:bg-rose-950/40 dark:hover:text-rose-300 cursor-pointer transition-colors active:scale-95"
             @click="emit('clear')"
           >
-            清除
+            <TrashIcon class="w-5 h-5" aria-hidden="true" />
           </button>
         </div>
       </div>

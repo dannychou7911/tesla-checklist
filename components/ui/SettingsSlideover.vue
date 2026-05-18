@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { XMarkIcon } from '@heroicons/vue/24/solid'
+
 import type { AppSettings } from '../../stores/checklist'
 
 interface Props {
@@ -61,9 +63,9 @@ function onChange<K extends keyof AppSettings>(key: K, e: Event): void {
       class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
       @click="close"
     />
-    <aside class="relative w-full max-w-sm h-full bg-white dark:bg-slate-900 shadow-soft-lg rounded-l-3xl flex flex-col motion-safe:animate-slide-down">
+    <aside class="relative w-full max-w-sm h-full bg-white dark:bg-slate-900 shadow-soft-lg flex flex-col motion-safe:animate-slide-from-right">
       <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700">
-        <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+        <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100 tracking-tight-display">
           設定
         </h2>
         <button
@@ -73,25 +75,25 @@ function onChange<K extends keyof AppSettings>(key: K, e: Event): void {
           class="w-11 h-11 flex items-center justify-center rounded-xl text-slate-500 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700 cursor-pointer transition-colors active:scale-95"
           @click="close"
         >
-          ✕
+          <XMarkIcon class="w-5 h-5" aria-hidden="true" />
         </button>
       </div>
       <div class="flex flex-col gap-4 px-4 py-4 overflow-y-auto">
         <label
           v-for="item in SETTING_ITEMS"
           :key="item.key"
-          class="flex items-start gap-3 cursor-pointer"
+          class="flex items-start gap-3 cursor-pointer p-2 -m-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
         >
           <input
             type="checkbox"
             :data-testid="`setting-${item.key}`"
             :checked="settings[item.key]"
-            class="mt-1 w-5 h-5 accent-slate-900 dark:accent-slate-100"
+            class="mt-1 w-5 h-5 accent-teal-600 dark:accent-teal-400 cursor-pointer"
             @change="(e) => onChange(item.key, e)"
           >
           <div class="flex flex-col gap-0.5">
             <span class="font-medium text-slate-900 dark:text-slate-100">{{ item.label }}</span>
-            <span class="text-sm text-slate-500 dark:text-slate-400">{{ item.description }}</span>
+            <span class="text-sm text-slate-500 dark:text-slate-400 leading-5">{{ item.description }}</span>
           </div>
         </label>
       </div>

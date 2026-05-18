@@ -91,10 +91,11 @@ describe('ProgressBar — v2 tier', () => {
     expect(w.text()).toContain('全部完成')
   })
 
-  it('tier=4 fill 帶 amber glow class', () => {
+  it('tier=4 fill 帶 success ring（emerald）', () => {
     const w = mount(ProgressBar, { props: { checked: 10, total: 10 } })
     const fill = w.get('[data-testid="progressbar-fill"]')
-    expect(fill.classes().some((c) => c.includes('shadow-amber-glow'))).toBe(true)
+    expect(fill.classes().some((c) => c.includes('shadow-success-ring'))).toBe(true)
+    expect(fill.classes().some((c) => c.includes('emerald'))).toBe(true)
   })
 })
 
@@ -112,10 +113,10 @@ describe('AppHeader', () => {
     expect(bar.props('total')).toBe(10)
   })
 
-  it('點「匯出 PDF」按鈕 emit export-pdf', async () => {
+  it('點「設定」按鈕 emit open-settings', async () => {
     const w = mount(AppHeader, { props: { checked: 0, total: 10 } })
-    await w.get('[data-testid="header-export"]').trigger('click')
-    expect(w.emitted('export-pdf')).toBeTruthy()
+    await w.get('[data-testid="header-settings"]').trigger('click')
+    expect(w.emitted('open-settings')).toBeTruthy()
   })
 
   it('點「清除」按鈕 emit clear', async () => {

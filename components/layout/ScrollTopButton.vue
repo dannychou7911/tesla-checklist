@@ -28,7 +28,7 @@ onBeforeUnmount(() => {
     type="button"
     data-testid="scroll-top"
     aria-label="回到頂部"
-    class="fixed bottom-6 right-6 z-20 w-12 h-12 rounded-full bg-teal-600 text-white shadow-soft-lg ring-1 ring-teal-700/20 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-400 dark:text-slate-950 cursor-pointer flex items-center justify-center transition-all duration-200 active:scale-95 motion-safe:animate-slide-down"
+    class="fixed bottom-24 right-6 z-20 w-12 h-12 rounded-full bg-teal-600 text-white shadow-soft-lg ring-1 ring-teal-700/20 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-400 dark:text-slate-950 cursor-pointer flex items-center justify-center transition-all duration-200 active:scale-95 motion-safe:animate-slide-up pb-[env(safe-area-inset-bottom)]"
     @click="scrollToTop"
   >
     <svg

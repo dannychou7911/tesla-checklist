@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { TrashIcon, XMarkIcon } from '@heroicons/vue/24/solid'
+
 import type { PhotoItem } from './PhotoUploader.vue'
 
 interface Props {
@@ -50,20 +52,21 @@ function onDelete(): void {
         type="button"
         data-testid="lightbox-close"
         aria-label="關閉"
-        class="absolute -top-12 right-0 w-10 h-10 rounded-full bg-white/15 text-white text-lg cursor-pointer hover:bg-white/25 backdrop-blur transition-colors active:scale-95"
+        class="absolute -top-12 right-0 w-10 h-10 rounded-full bg-white/15 text-white cursor-pointer hover:bg-white/25 backdrop-blur transition-colors active:scale-95 flex items-center justify-center"
         @click="close"
       >
-        ✕
+        <XMarkIcon class="w-5 h-5" aria-hidden="true" />
       </button>
       <button
         v-if="photo"
         type="button"
         data-testid="lightbox-delete"
         aria-label="刪除照片"
-        class="absolute -bottom-14 right-0 px-4 py-2 rounded-xl bg-rose-600 text-white text-sm font-medium cursor-pointer hover:bg-rose-700 shadow-soft transition-all active:scale-[0.98]"
+        class="absolute -bottom-14 right-0 px-4 py-2 rounded-xl bg-rose-600 text-white text-sm font-medium cursor-pointer hover:bg-rose-700 shadow-soft transition-all active:scale-[0.98] flex items-center gap-1.5"
         @click="onDelete"
       >
-        刪除照片
+        <TrashIcon class="w-4 h-4" aria-hidden="true" />
+        <span>刪除照片</span>
       </button>
     </div>
   </div>
